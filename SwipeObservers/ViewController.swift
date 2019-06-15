@@ -14,9 +14,12 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        
+        swipesObservers()
+        tapObservers()
     }
 
+    // Swipes
     func swipesObservers() {
         let swipeRight = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipes))
         swipeRight.direction = .right
@@ -44,11 +47,31 @@ class ViewController: UIViewController {
         case .up:
             label.text = "Up swipe"
         case .down:
-            label.text = "Left swipe"
+            label.text = "Down swipe"
         default:
             break
         }
     }
-
+    
+    // Taps
+    func tapObservers() {
+        let tripleTap = UITapGestureRecognizer(target: self, action:  #selector(trippleTapAction))
+        tripleTap.numberOfTapsRequired = 3
+        self.view.addGestureRecognizer(tripleTap)
+        
+        let doubleTap = UITapGestureRecognizer(target: self, action:  #selector(doubleTapAction))
+        doubleTap.require(toFail: tripleTap) // игнорирование двойного тапа если тапаем трижды
+        doubleTap.numberOfTapsRequired = 2
+        self.view.addGestureRecognizer(doubleTap)
+    }
+    
+    @objc func trippleTapAction() {
+        label.text = "Triple tap"
+    }
+    
+    @objc func doubleTapAction() {
+        label.text = "Double tap"
+    }
+    
 }
 
